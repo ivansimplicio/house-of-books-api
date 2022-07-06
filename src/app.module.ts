@@ -7,6 +7,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import ormConfig from 'ormconfig';
 import { join } from 'path';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { BooksModule } from './modules/books/books.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     CategoriesModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [],
