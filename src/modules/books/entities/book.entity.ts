@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Category } from './../../categories/entities/category.entity';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity({ name: 'books' })
 export class Book {
@@ -44,4 +45,18 @@ export class Book {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToMany(() => Category, (category) => category.books)
+  @JoinTable({
+    name: 'books_categories',
+    joinColumn: {
+      name: 'book_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'category_id',
+      referencedColumnName: 'id'
+    }
+  })
+  categories: Category[];
 }
