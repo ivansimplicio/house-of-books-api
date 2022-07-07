@@ -21,7 +21,7 @@ export class CreateTableBooks1657055633505 implements MigrationInterface {
         },
         {
           name: 'subtitle',
-          type: 'varchar(50)',
+          type: 'varchar(80)',
           isNullable: true
         },
         {
@@ -37,7 +37,7 @@ export class CreateTableBooks1657055633505 implements MigrationInterface {
         },
         {
           name: 'author',
-          type: 'varchar(50)',
+          type: 'varchar(80)',
           isNullable: false
         },
         {

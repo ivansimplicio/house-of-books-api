@@ -9,7 +9,7 @@ export class CreateBookInput {
   @Field(() => String)
   title: string;
 
-  @MaxLength(50, { message: '{subtitle} must be shorter than or equal to 50 characters.',  })
+  @MaxLength(80, { message: '{subtitle} must be shorter than or equal to 80 characters.',  })
   @Field(() => String, { defaultValue: '' })
   subtitle: string;
 
@@ -23,7 +23,7 @@ export class CreateBookInput {
   isbn: string;
 
   @IsNotEmpty({ message: 'The {author} field cannot be empty.'})
-  @MaxLength(50, { message: '{author} must be shorter than or equal to 50 characters.'})
+  @MaxLength(80, { message: '{author} must be shorter than or equal to 80 characters.'})
   @Field(() => String)
   author: string;
 
