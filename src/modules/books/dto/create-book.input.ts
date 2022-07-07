@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, MaxLength } from 'class-validator';
+import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, IsPositive, MaxLength, Min } from 'class-validator';
 
 @InputType()
 export class CreateBookInput {
@@ -45,10 +45,12 @@ export class CreateBookInput {
   coverType: string;
 
   @IsNotEmpty({ message: 'The {numberOfPages} field cannot be empty.'})
+  @IsPositive({ message: '{numberOfPages} must be a positive number.' })
   @Field(() => Int)
   numberOfPages: number;
 
   @IsNotEmpty({ message: 'The {value} field cannot be empty.'})
+  @Min(0.1, { message: '{value} must not be less than 0.1' })
   @Field(() => Float)
   value: number;
 

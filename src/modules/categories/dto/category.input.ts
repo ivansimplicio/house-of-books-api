@@ -5,6 +5,6 @@ import { IsNotEmpty, MaxLength } from 'class-validator';
 export class CategoryInput {
   @Field(() => String)
   @IsNotEmpty({ message: 'The {name} field cannot be empty.'})
-  @MaxLength(50, { message: '{name} must be shorter than or equal to 30 characters.'})
+  @MaxLength(50, { message: '{name} must be shorter than or equal to 50 characters.'})
   name: string;
 }
