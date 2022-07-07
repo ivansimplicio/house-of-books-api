@@ -11,7 +11,7 @@ const ormConfig = {
   logging: false,
   migrationsTableName: 'migrations',
   entities: [
-    'dist/**/*.entity{.ts,.js}'
+    './dist/**/*.entity{.ts,.js}'
   ],
   seeds: ['./dist/src/database/seeders/**/*.js'],
   migrations: ['./dist/src/database/migrations/*{.ts,.js}'],

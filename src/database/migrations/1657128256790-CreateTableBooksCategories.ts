@@ -48,7 +48,7 @@ export class CreateTableBooksCategories1657128256790 implements MigrationInterfa
           referencedColumnNames: ['id']
         }
       ]
-    }))
+    }));
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

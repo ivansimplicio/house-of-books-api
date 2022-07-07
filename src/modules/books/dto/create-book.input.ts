@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, IsPositive, MaxLength, Min } from 'class-validator';
+import { ArrayNotEmpty, ArrayUnique, IsNotEmpty, IsPositive, MaxLength, Min } from 'class-validator';
 
 @InputType()
 export class CreateBookInput {

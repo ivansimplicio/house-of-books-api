@@ -14,6 +14,6 @@ export default class SeedCategories implements Seeder {
         { name: 'Lógica de Programação' },
         { name: 'Games' }
       ])
-      .execute()
+      .execute();
   }
 }

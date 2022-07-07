@@ -115,7 +115,7 @@ export default class SeedBooks implements Seeder {
           value: 69.90
         }
       ])
-      .execute()
+      .execute();
 
     await connection.query(
       'INSERT INTO books_categories (book_id, category_id) VALUES '+
