@@ -9,13 +9,13 @@ export class CreateBookInput {
   @Field(() => String)
   title: string;
 
-  @Field(() => String, { nullable: true, defaultValue: '' })
   @MaxLength(50, { message: '{subtitle} must be shorter than or equal to 50 characters.',  })
-  subtitle?: string;
+  @Field(() => String, { defaultValue: '' })
+  subtitle: string;
 
   @MaxLength(255, { message: '{description} must be shorter than or equal to 255 characters.'})
-  @Field(() => String, { nullable: true })
-  description?: string;
+  @Field(() => String, { defaultValue: '' })
+  description: string;
 
   @IsNotEmpty({ message: 'The {isbn} field cannot be empty.'})
   @MaxLength(30, { message: '{isbn} must be shorter than or equal to 30 characters.'})
@@ -41,8 +41,8 @@ export class CreateBookInput {
   releaseDate?: Date;
 
   @MaxLength(20, { message: '{coverType} must be shorter than or equal to 20 characters.'})
-  @Field(() => String, { nullable: true })
-  coverType?: string;
+  @Field(() => String, { defaultValue: '' })
+  coverType: string;
 
   @IsNotEmpty({ message: 'The {numberOfPages} field cannot be empty.'})
   @IsPositive({ message: '{numberOfPages} must be a positive number.' })
