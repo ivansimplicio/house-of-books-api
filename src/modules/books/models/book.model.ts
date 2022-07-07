@@ -13,8 +13,8 @@ export class Book {
   @Field({ nullable: true})
   subtitle?: string;
 
-  @Field()
-  description: string;
+  @Field({ nullable: true})
+  description?: string;
 
   @Field()
   isbn: string;
@@ -28,11 +28,11 @@ export class Book {
   @Field()
   language: string;
 
-  @Field(() => Date)
-  releaseDate: Date;
+  @Field(() => Date, { nullable: true})
+  releaseDate?: Date;
 
-  @Field()
-  coverType: string;
+  @Field({ nullable: true})
+  coverType?: string;
 
   @Field(() => Int)
   numberOfPages: number;
