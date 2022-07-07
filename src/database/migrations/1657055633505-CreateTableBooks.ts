@@ -21,11 +21,13 @@ export class CreateTableBooks1657055633505 implements MigrationInterface {
         },
         {
           name: 'subtitle',
-          type: 'varchar(50)'
+          type: 'varchar(50)',
+          isNullable: true
         },
         {
           name: 'description',
-          type: 'varchar(255)'
+          type: 'varchar(255)',
+          isNullable: true
         },
         {
           name: 'isbn',
@@ -50,11 +52,13 @@ export class CreateTableBooks1657055633505 implements MigrationInterface {
         },
         {
           name: 'release_date',
-          type: 'timestamp'
+          type: 'timestamp',
+          isNullable: true
         },
         {
           name: 'cover_type',
-          type: 'varchar(20)'
+          type: 'varchar(20)',
+          isNullable: true
         },
         {
           name: 'number_of_pages',

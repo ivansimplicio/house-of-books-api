@@ -10,8 +10,8 @@ export class Book {
   @Field()
   title: string;
 
-  @Field()
-  subtitle: string;
+  @Field({ nullable: true})
+  subtitle?: string;
 
   @Field()
   description: string;
