@@ -1,5 +1,5 @@
 import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { IsNotEmpty, MaxLength } from 'class-validator';
+import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, MaxLength } from 'class-validator';
 
 @InputType()
 export class CreateBookInput {
@@ -51,4 +51,9 @@ export class CreateBookInput {
   @IsNotEmpty({ message: 'The {value} field cannot be empty.'})
   @Field(() => Float)
   value: number;
+
+  @ArrayNotEmpty({ message: 'The {categories} field cannot be empty.' })
+  @ArrayUnique({ message: 'Each element of the {categories} array must be unique.' })
+  @Field(() => [Int])
+  categories: number[];
 }
