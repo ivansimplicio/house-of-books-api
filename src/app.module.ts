@@ -8,6 +8,7 @@ import ormConfig from 'ormconfig';
 import { join } from 'path';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { BooksModule } from './modules/books/books.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { BooksModule } from './modules/books/books.module';
     }),
     CategoriesModule,
     BooksModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
