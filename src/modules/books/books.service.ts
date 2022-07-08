@@ -6,6 +6,10 @@ import { UpdateBookInput } from './dto/update-book.input';
 import { Book } from './entities/book.entity';
 import { Category } from './../categories/entities/category.entity';
 
+type Query = {
+  where: any;
+}
+
 @Injectable()
 export class BooksService {
 
@@ -13,10 +17,7 @@ export class BooksService {
               @InjectRepository(Category) private categoriesRepository: Repository<Category>) {}
 
   async create(data: CreateBookInput): Promise<Book> {
-    const bookExists = await this.booksRepository.findOneBy({ isbn: data.isbn });
-    if(bookExists){
-      throw new UnprocessableEntityException('This book is already registered.');
-    }
+    await this.validateNewBook(data);
     const { categories, ...book } = data;
     const categoriesFound = await this.findCategories(categories);
     return this.booksRepository.save({ ...book, categories: categoriesFound });
@@ -36,13 +37,7 @@ export class BooksService {
 
   async update(id: number, data: UpdateBookInput): Promise<Book> {
     const bookFound = await this.findOne(id);
-    const bookExists = await this.booksRepository.find({ where: {
-      id: Not(id),
-      isbn: data.isbn,
-    }})
-    if(bookExists.length > 0){
-      throw new UnprocessableEntityException('This book is already registered.')
-    }
+    await this.validateUpdatedBook(id, data);
     const { categories, ...bookData } = data;
     if(categories){
       const categoriesFound = await this.findCategories(categories);
@@ -55,6 +50,25 @@ export class BooksService {
     const book = await this.findOne(id);
     const deletedBook = await this.booksRepository.remove(book);
     return deletedBook ? true : false;
+  }
+
+  private async validateNewBook(data: CreateBookInput): Promise<void>{
+    const query = { where: { isbn: data.isbn } };
+    await this.findBookByQuery(query);
+  }
+
+  private async validateUpdatedBook(id: number, data: UpdateBookInput): Promise<void> {
+    if(data.isbn){
+      const query = { where: { id: Not(id), isbn: data.isbn, }};
+      await this.findBookByQuery(query);
+    }
+  }
+
+  private async findBookByQuery(query: Query): Promise<void> {
+    const user = await this.booksRepository.findOne(query);
+    if(user){
+      throw new UnprocessableEntityException(`The isbn provided is already registered.`);
+    }
   }
 
   private async findCategories(categoryIds: number[]): Promise<Category[]> {
