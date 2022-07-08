@@ -27,6 +27,6 @@ export class CreateUserInput {
   cpf: string;
 
   @MaxLength(30)
-  @Field(() => String, { defaultValue: '' })
+  @Field(() => String)
   phoneNumber: string;
 }

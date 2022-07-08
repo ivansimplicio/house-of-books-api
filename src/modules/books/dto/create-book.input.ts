@@ -10,11 +10,11 @@ export class CreateBookInput {
   title: string;
 
   @MaxLength(80, { message: '{subtitle} must be shorter than or equal to 80 characters.',  })
-  @Field(() => String, { defaultValue: '' })
+  @Field(() => String)
   subtitle: string;
 
   @MaxLength(255, { message: '{description} must be shorter than or equal to 255 characters.'})
-  @Field(() => String, { defaultValue: '' })
+  @Field(() => String)
   description: string;
 
   @IsNotEmpty({ message: 'The {isbn} field cannot be empty.'})
@@ -41,7 +41,7 @@ export class CreateBookInput {
   releaseDate?: Date;
 
   @MaxLength(20, { message: '{coverType} must be shorter than or equal to 20 characters.'})
-  @Field(() => String, { defaultValue: '' })
+  @Field(() => String)
   coverType: string;
 
   @IsNotEmpty({ message: 'The {numberOfPages} field cannot be empty.'})
