@@ -5,6 +5,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { cpf } from 'cpf-cnpj-validator';
+import Role from '../roles/entities/role.entity';
+import Roles from '../roles/enums/roles.enum';
 
 type Query = {
   where: any;
@@ -13,11 +15,13 @@ type Query = {
 @Injectable()
 export class UsersService {
 
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+  constructor(@InjectRepository(User) private usersRepository: Repository<User>,
+              @InjectRepository(Role) private rolesRepository: Repository<Role>) {}
 
   async create(data: CreateUserInput): Promise<User> {
     await this.validateNewUser(data);
-    const user = this.usersRepository.create(data);
+    const role = await this.rolesRepository.findOne({ where: { id: Roles.CLIENT } });
+    const user = this.usersRepository.create({ ...data, roles: [role] });
     return this.usersRepository.save(user);
   }
 
