@@ -22,13 +22,13 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ relations: ['roles'] });
   }
 
   async findOne(id: string): Promise<User> {
     let user: User;
     try{
-      user = await this.usersRepository.findOne({ where: { id } });
+      user = await this.usersRepository.findOne({ where: { id }, relations: ['roles'] });
     } catch {
       throw new BadRequestException('Invalid UUID.');
     }
