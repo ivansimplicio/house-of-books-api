@@ -5,7 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { cpf } from 'cpf-cnpj-validator';
-import Role from '../roles/entities/role.entity';
+import { Role } from '../roles/entities/role.entity';
 import Roles from '../roles/enums/roles.enum';
 
 type Query = {

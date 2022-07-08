@@ -1,6 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import Role from 'src/modules/roles/entities/role.entity';
+import { Role } from 'src/modules/roles/entities/role.entity';
 
 @Entity({ name: 'users' })
 export class User {

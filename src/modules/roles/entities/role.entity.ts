@@ -2,7 +2,7 @@ import { User } from './../../users/entities/user.entity';
 import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'roles' })
-export default class Role {
+export class Role {
 
   @PrimaryGeneratedColumn('identity')
   id: number;
