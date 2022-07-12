@@ -9,6 +9,7 @@ import { join } from 'path';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { BooksModule } from './modules/books/books.module';
 import { UsersModule } from './modules/users/users.module';
+import { AddressesModule } from './modules/addresses/addresses.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UsersModule } from './modules/users/users.module';
     CategoriesModule,
     BooksModule,
     UsersModule,
+    AddressesModule,
   ],
   controllers: [],
   providers: [],
