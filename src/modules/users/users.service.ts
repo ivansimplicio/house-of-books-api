@@ -1,3 +1,4 @@
+import { AddressesService } from './../addresses/addresses.service';
 import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
@@ -7,7 +8,6 @@ import { User } from './entities/user.entity';
 import { cpf } from 'cpf-cnpj-validator';
 import { Role } from '../roles/entities/role.entity';
 import Roles from '../roles/enums/roles.enum';
-import { Address } from '../addresses/entities/address.entity';
 
 type Query = {
   where: any;
@@ -18,15 +18,14 @@ export class UsersService {
 
   constructor(@InjectRepository(User) private usersRepository: Repository<User>,
               @InjectRepository(Role) private rolesRepository: Repository<Role>,
-              @InjectRepository(Address) private addressesRepository: Repository<Address>) {}
+              private readonly addressesService: AddressesService) {}
 
   async create(data: CreateUserInput): Promise<User> {
     await this.validateNewUser(data);
     const role = await this.rolesRepository.findOne({ where: { id: Roles.CLIENT } });
     const user = this.usersRepository.create({ ...data, roles: [role] });
     const savedUser = await this.usersRepository.save(user);
-    const { address } = data;
-    const savedAddress = await this.addressesRepository.save({ ...address, userId: savedUser.id });
+    const savedAddress = await this.addressesService.create(savedUser.id, data.address);
     savedUser.addresses = [savedAddress];
     return savedUser;
   }
