@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Role } from 'src/modules/roles/models/role.model';
+import { Address } from './../../addresses/models/address.model';
 
 @ObjectType()
 export class User {
@@ -27,4 +28,7 @@ export class User {
 
   @Field(() => [Role])
   roles: Role[];
+
+  @Field(() => [Address])
+  addresses: Address[];
 }

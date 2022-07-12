@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { cpf } from 'cpf-cnpj-validator';
 import { Role } from '../roles/entities/role.entity';
 import Roles from '../roles/enums/roles.enum';
+import { Address } from '../addresses/entities/address.entity';
 
 type Query = {
   where: any;
@@ -16,23 +17,28 @@ type Query = {
 export class UsersService {
 
   constructor(@InjectRepository(User) private usersRepository: Repository<User>,
-              @InjectRepository(Role) private rolesRepository: Repository<Role>) {}
+              @InjectRepository(Role) private rolesRepository: Repository<Role>,
+              @InjectRepository(Address) private addressesRepository: Repository<Address>) {}
 
   async create(data: CreateUserInput): Promise<User> {
     await this.validateNewUser(data);
     const role = await this.rolesRepository.findOne({ where: { id: Roles.CLIENT } });
     const user = this.usersRepository.create({ ...data, roles: [role] });
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+    const { address } = data;
+    const savedAddress = await this.addressesRepository.save({ ...address, userId: savedUser.id });
+    savedUser.addresses = [savedAddress];
+    return savedUser;
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['roles'] });
+    return this.usersRepository.find({ relations: ['roles', 'addresses'] });
   }
 
   async findOne(id: string): Promise<User> {
     let user: User;
     try{
-      user = await this.usersRepository.findOne({ where: { id }, relations: ['roles'] });
+      user = await this.usersRepository.findOne({ where: { id }, relations: ['roles', 'addresses'] });
     } catch {
       throw new BadRequestException('Invalid UUID.');
     }

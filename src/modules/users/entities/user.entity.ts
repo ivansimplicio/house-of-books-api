@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Address } from './../../addresses/entities/address.entity';
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Role } from 'src/modules/roles/entities/role.entity';
 
@@ -48,4 +49,7 @@ export class User {
     }
   })
   roles: Role[];
+
+  @OneToMany(() => Address, (address) => address.user)
+  addresses: Address[];
 }

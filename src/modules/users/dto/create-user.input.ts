@@ -1,5 +1,7 @@
+import { CreateAddressInput } from './../../addresses/dto/create-address.input';
 import { InputType, Field } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class CreateUserInput {
@@ -29,4 +31,9 @@ export class CreateUserInput {
   @MaxLength(30)
   @Field(() => String)
   phoneNumber: string;
+
+  @ValidateNested()
+  @Type(() => CreateAddressInput)
+  @Field(() => CreateAddressInput)
+  address: CreateAddressInput;
 }
