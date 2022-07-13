@@ -1,3 +1,4 @@
+import { DeliveryAddress } from './../../delivery-addresses/models/delivery-address.model';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
 
 @ObjectType()
@@ -14,4 +15,7 @@ export class Order {
 
   @Field(() => Date)
   updatedAt: Date;
+
+  @Field(() => DeliveryAddress)
+  deliveryAddress: DeliveryAddress;
 }
