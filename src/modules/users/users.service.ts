@@ -16,6 +16,8 @@ type Query = {
 @Injectable()
 export class UsersService {
 
+  private preloadRelations = ['roles', 'addresses', 'orders', 'orders.deliveryAddress', 'orders.items', 'orders.items.book'];
+
   constructor(@InjectRepository(User) private usersRepository: Repository<User>,
               @InjectRepository(Role) private rolesRepository: Repository<Role>,
               private readonly addressesService: AddressesService) {}
@@ -31,13 +33,13 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['roles', 'addresses'] });
+    return this.usersRepository.find({ relations: this.preloadRelations });
   }
 
   async findOne(id: string): Promise<User> {
     let user: User;
     try{
-      user = await this.usersRepository.findOne({ where: { id }, relations: ['roles', 'addresses'] });
+      user = await this.usersRepository.findOne({ where: { id }, relations: this.preloadRelations });
     } catch {
       throw new BadRequestException('Invalid UUID.');
     }
