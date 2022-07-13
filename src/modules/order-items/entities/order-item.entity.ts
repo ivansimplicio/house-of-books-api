@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Order } from './../../orders/entities/order.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'order_items' })
 export class OrderItem {
@@ -26,4 +27,8 @@ export class OrderItem {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToOne(() => Order, (order) => order.items)
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 }

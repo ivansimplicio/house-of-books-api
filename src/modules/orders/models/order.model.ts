@@ -1,3 +1,4 @@
+import { OrderItem } from './../../order-items/models/order-item.model';
 import { DeliveryAddress } from './../../delivery-addresses/models/delivery-address.model';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
 
@@ -18,4 +19,7 @@ export class Order {
 
   @Field(() => DeliveryAddress)
   deliveryAddress: DeliveryAddress;
+
+  @Field(() => [OrderItem])
+  items: OrderItem[];
 }

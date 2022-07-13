@@ -1,5 +1,6 @@
+import { OrderItem } from './../../order-items/entities/order-item.entity';
 import { DeliveryAddress } from './../../delivery-addresses/entities/delivery-address.entity';
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'orders' })
 export class Order {
@@ -21,4 +22,7 @@ export class Order {
 
   @OneToOne(() => DeliveryAddress, (address) => address.order)
   deliveryAddress: DeliveryAddress;
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+  items: OrderItem[];
 }
