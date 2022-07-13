@@ -1,3 +1,4 @@
+import { Order } from './../../orders/entities/order.entity';
 import { Address } from './../../addresses/entities/address.entity';
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -52,4 +53,7 @@ export class User {
 
   @OneToMany(() => Address, (address) => address.user)
   addresses: Address[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

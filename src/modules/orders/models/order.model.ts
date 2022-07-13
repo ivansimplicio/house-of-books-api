@@ -1,3 +1,4 @@
+import { User } from 'src/modules/users/models/user.model';
 import { OrderItem } from './../../order-items/models/order-item.model';
 import { DeliveryAddress } from './../../delivery-addresses/models/delivery-address.model';
 import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
@@ -22,4 +23,7 @@ export class Order {
 
   @Field(() => [OrderItem])
   items: OrderItem[];
+
+  @Field(() => User, { nullable: true })
+  user?: User;
 }
