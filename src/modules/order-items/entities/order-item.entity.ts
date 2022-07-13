@@ -1,3 +1,4 @@
+import { Book } from './../../books/entities/book.entity';
 import { Order } from './../../orders/entities/order.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
@@ -31,4 +32,8 @@ export class OrderItem {
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: 'order_id' })
   order: Order;
+
+  @ManyToOne(() => Book, (book) => book.items)
+  @JoinColumn({ name: 'book_id' })
+  book: Book;
 }

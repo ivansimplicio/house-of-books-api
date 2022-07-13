@@ -1,5 +1,6 @@
+import { OrderItem } from './../../order-items/entities/order-item.entity';
 import { Category } from './../../categories/entities/category.entity';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 
 @Entity({ name: 'books' })
 export class Book {
@@ -59,4 +60,7 @@ export class Book {
     }
   })
   categories: Category[];
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.book)
+  items: OrderItem[];
 }

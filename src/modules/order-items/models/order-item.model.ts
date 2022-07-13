@@ -1,3 +1,4 @@
+import { Book } from './../../books/models/book.model';
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 
 @ObjectType()
@@ -20,4 +21,7 @@ export class OrderItem {
 
   @Field(() => Date)
   updatedAt: Date;
+
+  @Field(() => Book)
+  book: Book;
 }
