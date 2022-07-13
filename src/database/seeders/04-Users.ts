@@ -2,12 +2,15 @@ import { Connection } from 'typeorm';
 import { Factory, Seeder } from 'typeorm-seeding';
 import { User } from './../../modules/users/entities/user.entity';
 
-import {v4 as uuidv4} from 'uuid';
 import * as bcrypt from 'bcryptjs';
 
 export default class SeedUsers implements Seeder {
   public async run(_factory: Factory, connection: Connection): Promise<any> {
-    const ids = [uuidv4(), uuidv4(), uuidv4()];
+    const ids = [
+      '82816389-0cbd-4a77-9099-8b8d348aeda7',
+      'd54ca0a1-53e4-44dd-afc6-e1cc77cc9399',
+      'a62c363c-0e97-425a-829e-302d1fb2c31c'
+    ];
     
     await connection
       .createQueryBuilder()
