@@ -10,6 +10,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { BooksModule } from './modules/books/books.module';
 import { UsersModule } from './modules/users/users.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AddressesModule } from './modules/addresses/addresses.module';
     BooksModule,
     UsersModule,
     AddressesModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [],
