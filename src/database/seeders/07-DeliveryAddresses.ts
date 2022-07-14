@@ -10,7 +10,6 @@ export default class SeedDeliveryAddresses implements Seeder {
       .into(DeliveryAddress)
       .values([
         {
-          id: 1,
           street: 'Rua dos Bobos',
           number: '0',
           district: 'Centro',
@@ -20,7 +19,6 @@ export default class SeedDeliveryAddresses implements Seeder {
           orderId: 1
         },
         {
-          id: 2,
           street: 'Rua Juscelino Kubitschek',
           number: '126',
           district: 'Centro',

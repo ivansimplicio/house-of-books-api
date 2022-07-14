@@ -15,12 +15,10 @@ export default class SeedOrders implements Seeder {
       .into(Order)
       .values([
         {
-          id: 1,
           amount: 125.82,
           userId: `${ids[0]}`
         },
         {
-          id: 2,
           amount: 79.84,
           userId: `${ids[1]}`
         }

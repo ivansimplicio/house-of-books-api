@@ -10,7 +10,6 @@ export default class SeedOrderItems implements Seeder {
       .into(OrderItem)
       .values([
         {
-          id: 1,
           quantity: 1,
           discount: 0.1,
           amount: 62.91,
@@ -18,7 +17,6 @@ export default class SeedOrderItems implements Seeder {
           orderId: 1
         },
         {
-          id: 2,
           quantity: 1,
           discount: 0.1,
           amount: 62.91,
@@ -26,7 +24,6 @@ export default class SeedOrderItems implements Seeder {
           orderId: 1
         },
         {
-          id: 3,
           quantity: 2,
           discount: 0.2,
           amount: 79.84,
