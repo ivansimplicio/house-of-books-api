@@ -1,5 +1,5 @@
 import { AddressesService } from './../addresses/addresses.service';
-import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 import { cpf } from 'cpf-cnpj-validator';
 import { Role } from '../roles/entities/role.entity';
 import Roles from '../roles/enums/roles.enum';
+import { Role as RoleAuth } from '../authorization/common/roles.enum';
 
 type Query = {
   where: any;
@@ -36,7 +37,10 @@ export class UsersService {
     return this.usersRepository.find({ relations: this.preloadRelations });
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(authUser: User, id: string): Promise<User> {
+    if(id !== authUser.id && !this.getUserRoles(authUser).includes(RoleAuth.ADMIN)){
+      throw new UnauthorizedException('Access denied.');
+    }
     let user: User;
     try{
       user = await this.usersRepository.findOne({ where: { id }, relations: this.preloadRelations });
@@ -49,16 +53,20 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, data: UpdateUserInput): Promise<User> {
-    const userFound = await this.findOne(id);
+  async update(authUser: User, id: string, data: UpdateUserInput): Promise<User> {
+    const userFound = await this.findOne(authUser, id);
     await this.validateUpdatedUser(id, data);
     return this.usersRepository.save({ ...userFound, ...data });
   }
 
-  async remove(id: string): Promise<boolean> {
-    const user = await this.findOne(id);
+  async remove(authUser: User, id: string): Promise<boolean> {
+    const user = await this.findOne(authUser, id);
     const deletedUser = await this.usersRepository.remove(user);
     return deletedUser ? true : false;
+  }
+  
+  private getUserRoles(user: User): string[] {
+    return user.roles.map(role => role.role);
   }
 
   private async validateNewUser(data: CreateUserInput): Promise<void> {

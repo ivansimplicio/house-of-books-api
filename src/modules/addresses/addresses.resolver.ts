@@ -8,6 +8,8 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from '../authorization/common/roles.decorator';
 import { Role } from '../authorization/common/roles.enum';
 import { RolesGuard } from '../authorization/guards/roles.guard';
+import { AuthUser } from '../authentication/utils/auth-user.decorator';
+import { User } from './../users/entities/user.entity';
 
 @Resolver(() => Address)
 export class AddressesResolver {
@@ -16,38 +18,38 @@ export class AddressesResolver {
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Address)
-  async createAddress(@Args('userId') userId: string, @Args('data') data: CreateAddressInput): Promise<Address> {
-    return this.addressesService.create(userId, data);
+  async createAddress(@AuthUser() authUser: User, @Args('data') data: CreateAddressInput): Promise<Address> {
+    return this.addressesService.create(authUser.id, data);
   }
 
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => [Address], { name: 'addresses' })
-  async findAll(@Args('userId') userId: string): Promise<Address[]> {
-    return this.addressesService.findAll(userId);
+  async findAll(@AuthUser() authUser: User): Promise<Address[]> {
+    return this.addressesService.findAll(authUser.id);
   }
 
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => Address, { name: 'address' })
-  async findOne(@Args('userId') userId: string, @Args('id', { type: () => Int }) id: number): Promise<Address> {
-    return this.addressesService.findOne(userId, id);
+  async findOne(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<Address> {
+    return this.addressesService.findOne(authUser.id, id);
   }
 
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Address)
   async updateAddress(
-    @Args('userId') userId: string,
+    @AuthUser() authUser: User,
     @Args('id') id: number,
     @Args('data') data: UpdateAddressInput): Promise<Address> {
-    return this.addressesService.update(userId, id, data);
+    return this.addressesService.update(authUser.id, id, data);
   }
 
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
-  async removeAddress(@Args('userId') userId: string, @Args('id', { type: () => Int }) id: number): Promise<boolean> {
-    return this.addressesService.remove(userId, id);
+  async removeAddress(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<boolean> {
+    return this.addressesService.remove(authUser.id, id);
   }
 }

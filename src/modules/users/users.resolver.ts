@@ -8,6 +8,8 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from '../authorization/common/roles.decorator';
 import { Role } from '../authorization/common/roles.enum';
 import { RolesGuard } from '../authorization/guards/roles.guard';
+import { User as UserEntity } from './entities/user.entity';
+import { AuthUser } from '../authentication/utils/auth-user.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -27,19 +29,19 @@ export class UsersResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'user' })
-  async findOne(@Args('id', { type: () => String }) id: string): Promise<User> {
-    return this.usersService.findOne(id);
+  async findOne(@AuthUser() authUser: UserEntity, @Args('id', { type: () => String }) id: string): Promise<User> {
+    return this.usersService.findOne(authUser, id);
   }
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
-  async updateUser(@Args('id') id: string, @Args('data') data: UpdateUserInput): Promise<User> {
-    return this.usersService.update(id, data);
+  async updateUser(@AuthUser() authUser: UserEntity, @Args('id') id: string, @Args('data') data: UpdateUserInput): Promise<User> {
+    return this.usersService.update(authUser, id, data);
   }
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Boolean)
-  async removeUser(@Args('id', { type: () => String }) id: string): Promise<boolean> {
-    return this.usersService.remove(id);
+  async removeUser(@AuthUser() authUser: UserEntity, @Args('id', { type: () => String }) id: string): Promise<boolean> {
+    return this.usersService.remove(authUser, id);
   }
 }

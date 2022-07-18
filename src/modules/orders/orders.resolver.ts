@@ -7,6 +7,8 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from '../authorization/common/roles.decorator';
 import { Role } from '../authorization/common/roles.enum';
 import { RolesGuard } from '../authorization/guards/roles.guard';
+import { AuthUser } from '../authentication/utils/auth-user.decorator';
+import { User } from './../users/entities/user.entity';
 
 @Resolver(() => Order)
 export class OrdersResolver {
@@ -15,8 +17,8 @@ export class OrdersResolver {
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Order)
-  async createOrder(@Args('userId') userId: string, @Args('data') data: CreateOrderInput): Promise<Order> {
-    return this.ordersService.create(userId, data);
+  async createOrder(@AuthUser() authUser: User, @Args('data') data: CreateOrderInput): Promise<Order> {
+    return this.ordersService.create(authUser, data);
   }
 
   @Roles(Role.ADMIN)
@@ -28,7 +30,7 @@ export class OrdersResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => Order, { name: 'order' })
-  async findOne(@Args('id', { type: () => Int }) id: number): Promise<Order> {
-    return this.ordersService.findOne(id);
+  async findOne(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<Order> {
+    return this.ordersService.findOne(authUser, id);
   }
 }

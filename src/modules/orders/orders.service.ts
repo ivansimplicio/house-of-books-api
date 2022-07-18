@@ -4,10 +4,12 @@ import { OrderItem } from './../order-items/entities/order-item.entity';
 import { Book } from './../books/entities/book.entity';
 import { AddressesService } from './../addresses/addresses.service';
 import { Order } from './entities/order.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateOrderInput } from './dto/create-order.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from './../users/entities/user.entity';
+import { Role } from '../authorization/common/roles.enum';
 
 @Injectable()
 export class OrdersService {
@@ -21,26 +23,33 @@ export class OrdersService {
     @InjectRepository(Book) private booksRepository: Repository<Book>,
     private readonly addressesService: AddressesService) {}
 
-  async create(userId: string, data: CreateOrderInput): Promise<Order> {
-    const address = await this.validateNewOrder(data, userId);
+  async create(authUser: User, data: CreateOrderInput): Promise<Order> {
+    const address = await this.validateNewOrder(data, authUser.id);
     const orderItems = await this.getOrderItems(data);
     const amount = this.calculateOrderValue(orderItems);
-    const order = await this.ordersRepository.save({ amount, userId });
+    const order = await this.ordersRepository.save({ amount, userId: authUser.id });
     await this.orderItemsRepository.save(this.orderItemsWithOrderId(orderItems, order.id));
     await this.deliveryAddresesRepository.save(this.formatDeliveryAddress(address, order.id));
-    return this.findOne(order.id);
+    return this.findOne(authUser, order.id);
   }
 
   async findAll(): Promise<Order[]> {
     return this.ordersRepository.find({ relations: this.preloadRelations });
   }
 
-  async findOne(id: number): Promise<Order> {
+  async findOne(authUser: User, id: number): Promise<Order> {
     const order = await this.ordersRepository.findOne({ where: { id }, relations: this.preloadRelations });
     if(!order){
       throw new NotFoundException('Order not found.');
     }
+    if(order.userId !== authUser.id && !this.getUserRoles(authUser).includes(Role.ADMIN)){
+      throw new UnauthorizedException('Access denied.');
+    }
     return order;
+  }
+
+  private getUserRoles(user: User): string[] {
+    return user.roles.map(role => role.role);
   }
 
   private async validateNewOrder(orderInput: CreateOrderInput, userId: string): Promise<Address> {
