@@ -26,7 +26,7 @@ export class BooksResolver {
   }
 
   @Query(() => Book, { name: 'book' })
-  async findOne(@Args('id', { type: () => Int }) id: number): Promise<Book> {
+  async findOne(@Args('id') id: number): Promise<Book> {
     return this.booksService.findOne(id);
   }
 
@@ -40,7 +40,7 @@ export class BooksResolver {
   @Roles(Role.ADMIN)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
-  async removeBook(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
+  async removeBook(@Args('id') id: number): Promise<boolean> {
     return this.booksService.remove(id);
   }
 }

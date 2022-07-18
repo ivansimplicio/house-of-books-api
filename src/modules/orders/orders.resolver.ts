@@ -30,7 +30,7 @@ export class OrdersResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => Order, { name: 'order' })
-  async findOne(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<Order> {
+  async findOne(@AuthUser() authUser: User, @Args('id') id: number): Promise<Order> {
     return this.ordersService.findOne(authUser, id);
   }
 }

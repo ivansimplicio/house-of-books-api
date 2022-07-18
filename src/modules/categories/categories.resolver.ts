@@ -25,7 +25,7 @@ export class CategoriesResolver {
   }
 
   @Query(() => Category, { name: 'category' })
-  async findOne(@Args('id', { type: () => Int }) id: number): Promise<Category> {
+  async findOne(@Args('id') id: number): Promise<Category> {
     return this.categoriesService.findOne(id);
   }
 
@@ -39,7 +39,7 @@ export class CategoriesResolver {
   @Roles(Role.ADMIN)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
-  async removeCategory(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
+  async removeCategory(@Args('id') id: number): Promise<boolean> {
     return this.categoriesService.remove(id);
   }
 }

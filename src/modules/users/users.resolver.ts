@@ -29,7 +29,7 @@ export class UsersResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'user' })
-  async findOne(@AuthUser() authUser: UserEntity, @Args('id', { type: () => String }) id: string): Promise<User> {
+  async findOne(@AuthUser() authUser: UserEntity, @Args('id') id: string): Promise<User> {
     return this.usersService.findOne(authUser, id);
   }
 
@@ -41,7 +41,7 @@ export class UsersResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Boolean)
-  async removeUser(@AuthUser() authUser: UserEntity, @Args('id', { type: () => String }) id: string): Promise<boolean> {
+  async removeUser(@AuthUser() authUser: UserEntity, @Args('id') id: string): Promise<boolean> {
     return this.usersService.remove(authUser, id);
   }
 }

@@ -32,7 +32,7 @@ export class AddressesResolver {
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => Address, { name: 'address' })
-  async findOne(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<Address> {
+  async findOne(@AuthUser() authUser: User, @Args('id') id: number): Promise<Address> {
     return this.addressesService.findOne(authUser.id, id);
   }
 
@@ -49,7 +49,7 @@ export class AddressesResolver {
   @Roles(Role.CLIENT)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
-  async removeAddress(@AuthUser() authUser: User, @Args('id', { type: () => Int }) id: number): Promise<boolean> {
+  async removeAddress(@AuthUser() authUser: User, @Args('id') id: number): Promise<boolean> {
     return this.addressesService.remove(authUser.id, id);
   }
 }
