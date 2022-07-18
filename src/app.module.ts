@@ -11,6 +11,7 @@ import { BooksModule } from './modules/books/books.module';
 import { UsersModule } from './modules/users/users.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     UsersModule,
     AddressesModule,
     OrdersModule,
+    AuthenticationModule,
   ],
   controllers: [],
   providers: [],
