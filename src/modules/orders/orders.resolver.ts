@@ -4,18 +4,23 @@ import { OrdersService } from './orders.service';
 import { Order } from './models/order.model';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from '../authorization/common/roles.decorator';
+import { Role } from '../authorization/common/roles.enum';
+import { RolesGuard } from '../authorization/guards/roles.guard';
 
 @Resolver(() => Order)
 export class OrdersResolver {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.CLIENT)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Order)
   async createOrder(@Args('userId') userId: string, @Args('data') data: CreateOrderInput): Promise<Order> {
     return this.ordersService.create(userId, data);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => [Order], { name: 'orders' })
   async findAll(): Promise<Order[]> {
     return this.ordersService.findAll();

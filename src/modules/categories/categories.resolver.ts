@@ -4,12 +4,16 @@ import { CategoriesService } from './categories.service';
 import { Category } from './models/category.model';
 import { CategoryInput } from './dto/category.input';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from '../authorization/common/roles.decorator';
+import { Role } from '../authorization/common/roles.enum';
+import { RolesGuard } from '../authorization/guards/roles.guard';
 
 @Resolver(() => Category)
 export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Category)
   async createCategory(@Args('data') data: CategoryInput): Promise<Category> {
     return this.categoriesService.create(data);
@@ -25,13 +29,15 @@ export class CategoriesResolver {
     return this.categoriesService.findOne(id);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Category)
   async updateCategory(@Args('id') id: number, @Args('data') data: CategoryInput): Promise<Category> {
     return this.categoriesService.update(id, data);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
   async removeCategory(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
     return this.categoriesService.remove(id);

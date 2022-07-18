@@ -12,6 +12,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { AuthorizationModule } from './modules/authorization/authorization.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
     AddressesModule,
     OrdersModule,
     AuthenticationModule,
+    AuthorizationModule,
   ],
   controllers: [],
   providers: [],

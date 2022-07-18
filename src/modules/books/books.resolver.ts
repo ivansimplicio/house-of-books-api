@@ -5,12 +5,16 @@ import { Book } from './models/book.model';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from '../authorization/common/roles.decorator';
+import { Role } from '../authorization/common/roles.enum';
+import { RolesGuard } from '../authorization/guards/roles.guard';
 
 @Resolver(() => Book)
 export class BooksResolver {
   constructor(private readonly booksService: BooksService) {}
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Book)
   async createBook(@Args('data') data: CreateBookInput): Promise<Book> {
     return this.booksService.create(data);
@@ -26,13 +30,15 @@ export class BooksResolver {
     return this.booksService.findOne(id);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Book)
   async updateBook(@Args('id') id: number, @Args('data') data: UpdateBookInput): Promise<Book> {
     return this.booksService.update(id, data);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Mutation(() => Boolean)
   async removeBook(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
     return this.booksService.remove(id);

@@ -5,6 +5,9 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './models/user.model';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from '../authorization/common/roles.decorator';
+import { Role } from '../authorization/common/roles.enum';
+import { RolesGuard } from '../authorization/guards/roles.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -15,7 +18,8 @@ export class UsersResolver {
     return this.usersService.create(data);
   }
 
-  @UseGuards(GqlAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Query(() => [User], { name: 'users' })
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
