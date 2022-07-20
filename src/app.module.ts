@@ -13,6 +13,8 @@ import { AddressesModule } from './modules/addresses/addresses.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import mailerConfig from './services/mailer/config/config';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req }) => ({ req }),
     }),
+    MailerModule.forRoot(mailerConfig),
     CategoriesModule,
     BooksModule,
     UsersModule,

@@ -25,6 +25,7 @@
     "start:db": "npm run typeorm migration:run && npm run seed:run"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.7.1",
     "@nestjs/apollo": "^10.0.16",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.1.0",
@@ -42,6 +43,8 @@
     "cpf-cnpj-validator": "^1.0.3",
     "dotenv": "^16.0.1",
     "graphql": "^16.5.0",
+    "handlebars": "^4.7.7",
+    "nodemailer": "^6.7.7",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
