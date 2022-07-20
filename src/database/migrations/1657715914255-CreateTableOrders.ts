@@ -21,7 +21,8 @@ export class CreateTableOrders1657715914255 implements MigrationInterface {
         },
         {
           name: 'user_id',
-          type: 'uuid'
+          type: 'uuid',
+          isNullable: true
         },
         {
           name: 'created_at',
