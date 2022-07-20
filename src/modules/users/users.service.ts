@@ -1,6 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { WelcomeClientMailer } from './../../services/mailer/mailers/welcome-client.mailer';
 import { WelcomeAdminMailer } from './../../services/mailer/mailers/welcome-admin.mailer';
+import { AccountDeletionMailer } from './../../services/mailer/mailers/account-deletion.mailer';
 import { AddressesService } from './../addresses/addresses.service';
 import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -77,6 +78,7 @@ export class UsersService {
   async remove(authUser: User, id: string): Promise<boolean> {
     const user = await this.findOne(authUser, id);
     const deletedUser = await this.usersRepository.remove(user);
+    await new AccountDeletionMailer(this.mailerService).sendEmail(user.name, user.email);
     return deletedUser ? true : false;
   }
   
