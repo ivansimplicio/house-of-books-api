@@ -1,5 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { WelcomeClientMailer } from './../../services/mailer/mailers/welcome-client.mailer';
+import { WelcomeAdminMailer } from './../../services/mailer/mailers/welcome-admin.mailer';
 import { AddressesService } from './../addresses/addresses.service';
 import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,7 +43,9 @@ export class UsersService {
     await this.validateNewUser(data);
     const role = await this.rolesRepository.findOne({ where: { id: Roles.ADMIN } });
     const admin = this.usersRepository.create({ ...data, roles: [role] });
-    return this.usersRepository.save(admin);
+    const savedAdmin = await this.usersRepository.save(admin);
+    await new WelcomeAdminMailer(this.mailerService).sendEmail(savedAdmin.name, savedAdmin.email);
+    return savedAdmin;
   }
 
   async findAll(): Promise<User[]> {
