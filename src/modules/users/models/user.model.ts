@@ -27,11 +27,11 @@ export class User {
   @Field(() => Date)
   updatedAt: Date;
 
-  @Field(() => [Role])
-  roles: Role[];
+  @Field(() => [Role], { nullable: true })
+  roles?: Role[];
 
-  @Field(() => [Address])
-  addresses: Address[];
+  @Field(() => [Address], { nullable: true })
+  addresses?: Address[];
 
   @Field(() => [Order], { nullable: true })
   orders?: Order[];
