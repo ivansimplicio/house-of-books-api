@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        background-color: #e0eff1;
+        color: #680148;
+        text-align: center;
+        font-family: Helvetica;
+        font-weight: bold;
+        padding: auto;
+        font-size: 30px;
+      }
+      .header {
+        background-color: #7db4b5;
+        padding: 5%;
+      }
+      .header-title {
+        font-size: 52px;
+      }
+      .content {
+        margin-left: 10%;
+        margin-right: 10%;
+      }
+      .footer {
+        font-size: 20px;
+        background-color: #7db4b5;
+      }
+      table, td, th {
+        font-size: 25px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 4px solid #680148;
+        border-collapse: collapse;
+        padding: 10px 15px 10px 15px;
+      }
+      td {
+        color: #269294;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-title">Novo pedido realizado! 😁</div>
+      </div>
+      <div class="content">
+        <p>Olá {{ payload.user.name }}, recebemos o seu pedido! Ele já está sendo
+          preparado e em breve será entregue a você.</p>
+        <p>Segue um resumo do seu pedido:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Nº DO PEDIDO</th>
+              <th>DATA</th>
+              <th>VALOR TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ payload.order.id }}</td>
+              <td>{{ payload.order.date }}</td>
+              <td>{{ payload.order.amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table>
+          <thead>
+            <tr>
+              <th>ENDEREÇO DE ENTREGA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ payload.order.address }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table>
+          <thead>
+            <tr>
+              <th>LIVRO</th>
+              <th>VALOR</th>
+              <th>QNT</th>
+              <th>DESCONTO</th>
+              <th>VALOR TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each payload.order.items}}
+              <tr>
+                <td>{{ this.book.title }}</td>
+                <td>{{ this.book.value }}</td>
+                <td>{{ this.quantity }}</td>
+                <td>{{ this.discount }}</td>
+                <td>{{ this.amount }}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <br>
+      </div>
+      <div class="footer">
+        <p>House of Books, 2022</p>
+      </div>
+    </div>
+  </body>
+</html>

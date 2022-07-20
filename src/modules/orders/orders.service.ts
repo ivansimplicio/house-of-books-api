@@ -1,3 +1,5 @@
+import { MailerService } from '@nestjs-modules/mailer';
+import { NewOrderMailer } from './../../services/mailer/mailers/new-order.mailer';
 import { Address } from './../addresses/entities/address.entity';
 import { DeliveryAddress } from './../delivery-addresses/entities/delivery-address.entity';
 import { OrderItem } from './../order-items/entities/order-item.entity';
@@ -21,7 +23,8 @@ export class OrdersService {
     @InjectRepository(OrderItem) private orderItemsRepository: Repository<OrderItem>,
     @InjectRepository(DeliveryAddress) private deliveryAddresesRepository: Repository<DeliveryAddress>,
     @InjectRepository(Book) private booksRepository: Repository<Book>,
-    private readonly addressesService: AddressesService) {}
+    private readonly addressesService: AddressesService,
+    private readonly mailerService: MailerService) {}
 
   async create(authUser: User, data: CreateOrderInput): Promise<Order> {
     const address = await this.validateNewOrder(data, authUser.id);
@@ -30,7 +33,9 @@ export class OrdersService {
     const order = await this.ordersRepository.save({ amount, userId: authUser.id });
     await this.orderItemsRepository.save(this.orderItemsWithOrderId(orderItems, order.id));
     await this.deliveryAddresesRepository.save(this.formatDeliveryAddress(address, order.id));
-    return this.findOne(authUser, order.id);
+    const newOrder = await this.findOne(authUser, order.id);
+    await new NewOrderMailer(this.mailerService).sendEmail(newOrder);
+    return newOrder;
   }
 
   async findAll(): Promise<Order[]> {
