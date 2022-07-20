@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        background-color: #e0eff1;
+        color: #680148;
+        text-align: center;
+        font-family: Helvetica;
+        font-weight: bold;
+        padding: auto;
+        font-size: 30px;
+      }
+      .header {
+        background-color: #7db4b5;
+        padding: 5%;
+      }
+      .header-title {
+        font-size: 52px;
+      }
+      .content {
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+      .footer {
+        font-size: 20px;
+        background-color: #7db4b5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-title">Bem vindo(a) a House of Books! 😁</div>
+      </div>
+      <div class="content">
+        <p>Olá {{ payload.name }}, sua conta foi criada com sucesso. A partir de agora você acessar a nossa loja,
+          conferir nossas ofertas e efetuar sua primeira compra!</p>
+        <p>Esperamos por você!</p>
+      </div>
+      <div class="footer">
+        <p>House of Books, 2022</p>
+      </div>
+    </div>
+  </body>
+</html>

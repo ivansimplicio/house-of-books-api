@@ -1,3 +1,5 @@
+import { MailerService } from '@nestjs-modules/mailer';
+import { WelcomeClientMailer } from './../../services/mailer/mailers/welcome-client.mailer';
 import { AddressesService } from './../addresses/addresses.service';
 import { Injectable, UnprocessableEntityException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,7 +24,8 @@ export class UsersService {
 
   constructor(@InjectRepository(User) private usersRepository: Repository<User>,
               @InjectRepository(Role) private rolesRepository: Repository<Role>,
-              private readonly addressesService: AddressesService) {}
+              private readonly addressesService: AddressesService,
+              private readonly mailerService: MailerService) {}
 
   async create(data: CreateUserInput): Promise<User> {
     await this.validateNewUser(data);
@@ -31,6 +34,7 @@ export class UsersService {
     const savedUser = await this.usersRepository.save(user);
     const savedAddress = await this.addressesService.create(savedUser.id, data.address);
     savedUser.addresses = [savedAddress];
+    await new WelcomeClientMailer(this.mailerService).sendEmail(savedUser.name, savedUser.email);
     return savedUser;
   }
 
