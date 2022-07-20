@@ -9,6 +9,7 @@ import { cpf } from 'cpf-cnpj-validator';
 import { Role } from '../roles/entities/role.entity';
 import Roles from '../roles/enums/roles.enum';
 import { Role as RoleAuth } from '../authorization/common/roles.enum';
+import { CreateAdminInput } from './dto/create-admin.input';
 
 type Query = {
   where: any;
@@ -31,6 +32,13 @@ export class UsersService {
     const savedAddress = await this.addressesService.create(savedUser.id, data.address);
     savedUser.addresses = [savedAddress];
     return savedUser;
+  }
+
+  async createAdmin(data: CreateAdminInput): Promise<User> {
+    await this.validateNewUser(data);
+    const role = await this.rolesRepository.findOne({ where: { id: Roles.ADMIN } });
+    const admin = this.usersRepository.create({ ...data, roles: [role] });
+    return this.usersRepository.save(admin);
   }
 
   async findAll(): Promise<User[]> {
@@ -69,7 +77,7 @@ export class UsersService {
     return user.roles.map(role => role.role);
   }
 
-  private async validateNewUser(data: CreateUserInput): Promise<void> {
+  private async validateNewUser(data: CreateUserInput | CreateAdminInput): Promise<void> {
     await this.findUserByQuery({ where: { email: data.email } }, 'email');
     await this.findUserByQuery({ where: { cpf: data.cpf } }, 'cpf');
     this.validateCpf(data.cpf);

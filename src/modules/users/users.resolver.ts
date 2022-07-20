@@ -10,6 +10,8 @@ import { Role } from '../authorization/common/roles.enum';
 import { RolesGuard } from '../authorization/guards/roles.guard';
 import { User as UserEntity } from './entities/user.entity';
 import { AuthUser } from '../authentication/utils/auth-user.decorator';
+import { Admin } from './models/admin.model';
+import { CreateAdminInput } from './dto/create-admin.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -18,6 +20,13 @@ export class UsersResolver {
   @Mutation(() => User)
   async createUser(@Args('data') data: CreateUserInput): Promise<User> {
     return this.usersService.create(data);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Mutation(() => Admin)
+  async createAdmin(@Args('data') data: CreateAdminInput): Promise<Admin> {
+    return this.usersService.createAdmin(data);
   }
 
   @Roles(Role.ADMIN)
