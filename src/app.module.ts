@@ -14,6 +14,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { PasswordsModule } from './modules/passwords/passwords.module';
 import mailerConfig from './services/mailer/config/config';
 
 @Module({
@@ -33,6 +34,7 @@ import mailerConfig from './services/mailer/config/config';
     OrdersModule,
     AuthenticationModule,
     AuthorizationModule,
+    PasswordsModule,
   ],
   controllers: [],
   providers: [],
