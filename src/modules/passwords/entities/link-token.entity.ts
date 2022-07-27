@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Entity } from 'typeorm';
+import { User } from './../../users/entities/user.entity';
+import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Entity, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity({ name: 'link_tokens' })
 export class LinkToken {
@@ -17,4 +18,8 @@ export class LinkToken {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToOne(() => User, (user) => user.linkToken)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

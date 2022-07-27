@@ -1,6 +1,7 @@
+import { LinkToken } from './../../passwords/entities/link-token.entity';
 import { Order } from './../../orders/entities/order.entity';
 import { Address } from './../../addresses/entities/address.entity';
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Role } from 'src/modules/roles/entities/role.entity';
 
@@ -56,4 +57,7 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToOne(() => LinkToken, (linkToken) => linkToken.user)
+  linkToken: LinkToken;
 }
