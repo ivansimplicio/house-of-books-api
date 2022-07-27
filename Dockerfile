@@ -8,6 +8,6 @@ RUN npm install --force
 
 COPY . .
 
-EXPOSE ${API_PORT}
+EXPOSE ${PORT}
 
 CMD [ "npm", "run", "start:dev"]
