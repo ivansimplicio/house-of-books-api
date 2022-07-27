@@ -1,0 +1,41 @@
+version: "3"
+
+networks:
+  house-of-books-api:
+    external: true
+
+services:
+  app:
+    container_name: house-of-books-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    image: house-of-books-api
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    networks:
+      - house-of-books-api
+    depends_on:
+      - database
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    environment:
+      - POSTGRES_HOST=database
+
+  database:
+    container_name: db-house-of-books-api
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    expose:
+      - '${POSTGRES_PORT}'
+    networks:
+      - house-of-books-api
+    volumes:
+      - /db/var/lib/postgres

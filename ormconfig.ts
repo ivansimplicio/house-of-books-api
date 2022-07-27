@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
 const ormConfig = {
   type: 'postgres',
@@ -15,6 +15,6 @@ const ormConfig = {
   ],
   seeds: ['./dist/src/database/seeders/**/*.js'],
   migrations: ['./dist/src/database/migrations/*{.ts,.js}'],
-}
+};
 
 export default ormConfig;
