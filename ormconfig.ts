@@ -9,6 +9,12 @@ const ormConfig = {
   database: process.env.POSTGRES_DATABASE,
   synchronize: false,
   logging: false,
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
   migrationsTableName: 'migrations',
   entities: [
     './dist/**/*.entity{.ts,.js}'
